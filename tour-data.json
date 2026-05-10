@@ -1,0 +1,23 @@
+{
+  "title": "Evento Imperium",
+  "startScene": "img_20260509_132909_00_518_ycgnwo",
+  "options": {
+    "autoRotate": false,
+    "compass": true
+  },
+  "cover": null,
+  "logo": null,
+  "audio": null,
+  "plan": null,
+  "scenes": {
+    "img_20260509_132909_00_518_ycgnwo": {
+      "title": "Salon",
+      "panorama": "photos/img_20260509_132909_00_518_ycgnwo.jpg",
+      "initialYaw": 0,
+      "initialPitch": 0,
+      "initialHfov": 100,
+      "northOffset": 0,
+      "hotspots": []
+    }
+  }
+}
