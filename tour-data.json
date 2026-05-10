@@ -5,7 +5,7 @@
     "autoRotate": false,
     "compass": true
   },
-  "cover": null,
+  "cover": "assets/cover.jpg",
   "logo": null,
   "audio": null,
   "plan": null,
