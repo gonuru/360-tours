@@ -1,6 +1,6 @@
 {
-  "title": "Mi Tour 360",
-  "startScene": "img_20260404_100351_00_482_uzcedo",
+  "title": "Prueba Imperium",
+  "startScene": "img_20260509_132909_00_518_brk1pk",
   "options": {
     "autoRotate": false,
     "compass": true
@@ -10,9 +10,9 @@
   "audio": null,
   "plan": null,
   "scenes": {
-    "img_20260404_100351_00_482_uzcedo": {
-      "title": "IMG_20260404_100351_00_482",
-      "panorama": "photos/img_20260404_100351_00_482_uzcedo.jpg",
+    "img_20260509_132909_00_518_brk1pk": {
+      "title": "Salon",
+      "panorama": "photos/img_20260509_132909_00_518_brk1pk.jpg",
       "initialYaw": 0,
       "initialPitch": 0,
       "initialHfov": 100,
