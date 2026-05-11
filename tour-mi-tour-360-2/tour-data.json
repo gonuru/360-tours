@@ -1,0 +1,23 @@
+{
+  "title": "Mi Tour 360",
+  "startScene": "6598_7cfa6r",
+  "options": {
+    "autoRotate": false,
+    "compass": true
+  },
+  "cover": null,
+  "logo": null,
+  "audio": null,
+  "plan": null,
+  "scenes": {
+    "6598_7cfa6r": {
+      "title": "6598",
+      "panorama": "photos/6598_7cfa6r.jpg",
+      "initialYaw": 0,
+      "initialPitch": 0,
+      "initialHfov": 100,
+      "northOffset": 0,
+      "hotspots": []
+    }
+  }
+}
