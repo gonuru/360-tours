@@ -1,4 +1,4 @@
-Tour 360 - Prueba Imperium
+Tour 360 - Mi Tour 360
 
 Contenido:
   index.html         -> pagina del tour

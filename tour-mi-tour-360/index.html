@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mi Tour 360</title>
+<meta name="description" content="Tour panorámico 360° interactivo">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Tour 360">
+<meta property="og:title" content="Mi Tour 360">
+<meta property="og:description" content="Tour panorámico 360° interactivo. Hacé click para explorar.">
+<meta property="og:image" content="https://gonuru.github.io/360-tours/tour-mi-tour-360/photos/img_20260509_132909_00_518_8vwjod.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://gonuru.github.io/360-tours/tour-mi-tour-360/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Mi Tour 360">
+<meta name="twitter:description" content="Tour panorámico 360° interactivo">
+<meta name="twitter:image" content="https://gonuru.github.io/360-tours/tour-mi-tour-360/photos/img_20260509_132909_00_518_8vwjod.jpg">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; background: #000; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; overflow: hidden; color: #fff; }
+  #panorama { width: 100%; height: 100vh; }
+  #tour-title { position: absolute; top: 14px; left: 14px; background: rgba(0,0,0,.55); padding: 8px 14px; border-radius: 6px; z-index: 10; font-size: 16px; pointer-events: none; max-width: calc(100% - 28px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  #logo-wrap { position: absolute; bottom: 14px; left: 14px; z-index: 20; pointer-events: none; }
+  #logo-wrap img { max-width: 120px; max-height: 60px; filter: drop-shadow(0 2px 4px rgba(0,0,0,.5)); }
+  #zoom-controls { position: absolute; bottom: 14px; right: 80px; z-index: 20; display: flex; align-items: center; gap: 8px; }
+  .control-group { display: flex; align-items: center; gap: 2px; background: rgba(0,0,0,.55); border: 1px solid rgba(255,255,255,.2); border-radius: 6px; padding: 2px; }
+  .control-group button { background: transparent; color: #fff; border: none; width: 34px; height: 34px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: background .15s; border-radius: 4px; }
+  .control-group button:hover { background: rgba(255,255,255,.1); }
+  .control-group button.active { background: #2563eb; color: #fff; }
+  #btn-plan { width: auto; padding: 0 12px; font-size: 13px; font-weight: 600; }
+  #zoom-val { font-size: 11px; font-weight: 600; min-width: 45px; text-align: center; color: #fff; font-family: monospace; }
+  #scene-name { position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,.55); padding: 6px 14px; border-radius: 6px; z-index: 10; font-size: 14px; pointer-events: none; max-width: 80%; text-align: center; }
+  #toolbar { position: absolute; top: 14px; right: 14px; z-index: 10; display: flex; gap: 8px; }
+  #toolbar button { background: rgba(0,0,0,.55); color: #fff; border: 1px solid rgba(255,255,255,.2); border-radius: 6px; padding: 8px 12px; cursor: pointer; font-size: 14px; font-family: inherit; }
+  #toolbar button:hover { background: rgba(0,0,0,.8); }
+  #toolbar button.active { background: #2563eb; border-color: #2563eb; }
+
+  #cover { position: fixed; inset: 0; background: #000 center/cover no-repeat; z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px; transition: opacity .5s; }
+  #cover::before { content: ""; position: absolute; inset: 0; background: linear-gradient(rgba(0,0,0,.2), rgba(0,0,0,.7)); }
+  #cover .cover-content { position: relative; z-index: 1; }
+  #cover h1 { font-size: 48px; margin: 0 0 24px; text-shadow: 0 2px 12px rgba(0,0,0,.7); }
+  #cover button { background: #2563eb; color: #fff; border: none; padding: 14px 36px; font-size: 18px; border-radius: 8px; cursor: pointer; font-family: inherit; font-weight: 600; }
+  #cover button:hover { background: #1d4ed8; }
+  #cover.hidden { opacity: 0; pointer-events: none; }
+
+  #plan-overlay { position: absolute; bottom: 60px; right: 14px; width: 320px; max-width: 40vw; background: rgba(0,0,0,.8); border-radius: 8px; padding: 8px; z-index: 20; display: none; }
+  #plan-overlay.show { display: block; }
+  #plan-overlay .plan-wrap { position: relative; }
+  #plan-overlay img { display: block; width: 100%; border-radius: 4px; }
+  #plan-overlay .plan-marker { position: absolute; width: 22px; height: 22px; margin-left: -11px; margin-top: -11px; border-radius: 50%; background: #4a8cff; border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,.5); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; cursor: pointer; }
+  #plan-overlay .plan-marker.active { background: #f0b400; }
+
+  #info-popup { position: fixed; inset: 0; background: rgba(0,0,0,.7); z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px; }
+  #info-popup.show { display: flex; }
+  #info-popup .info-content { background: #1c1f26; border-radius: 10px; padding: 24px; max-width: 560px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; }
+  #info-popup h2 { margin: 0 0 12px; font-size: 22px; }
+  #info-popup p { line-height: 1.5; margin: 0 0 14px; white-space: pre-wrap; }
+  #info-popup img { display: block; max-width: 100%; border-radius: 6px; margin: 0 0 14px; }
+  #info-popup a.info-link { color: #4a8cff; text-decoration: none; word-break: break-all; }
+  #info-popup a.info-link:hover { text-decoration: underline; }
+  #info-popup .close-x { position: absolute; top: 10px; right: 12px; background: none; border: none; color: #9aa0ad; font-size: 24px; cursor: pointer; line-height: 1; }
+
+  .pnlm-hotspot.tour-hs {
+    width: 30px !important; height: 30px !important;
+    border-radius: 50% !important;
+    border: 3px solid #fff !important;
+    box-shadow: 0 0 0 2px rgba(0,0,0,.45), 0 2px 8px rgba(0,0,0,.5) !important;
+    background-image: none !important;
+    cursor: pointer !important;
+  }
+  .pnlm-hotspot.tour-hs.tour-hs-info { background-color: #f0b400 !important; }
+  .pnlm-hotspot.tour-hs.tour-hs-scene { background-color: #4a8cff !important; }
+  .pnlm-hotspot.tour-hs:hover { transform: scale(1.15); transition: transform .12s; }
+  .pnlm-about-msg { display: none !important; }
+
+  @media (max-width: 600px) {
+    #tour-title { font-size: 14px; padding: 6px 10px; }
+    #toolbar button { padding: 6px 10px; font-size: 13px; }
+    #cover h1 { font-size: 32px; }
+    #plan-overlay { width: 220px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="file-warning" style="position:fixed;inset:0;background:#15171c;color:#e6e8ec;z-index:300;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;">
+  <div style="max-width:560px;background:#1c1f26;border:1px solid #2a2e38;border-radius:10px;padding:32px;">
+    <h2 style="margin:0 0 12px;color:#f0b400;">No se puede ver el tour con doble clic</h2>
+    <p style="line-height:1.5;color:#9aa0ad;">Por seguridad, los navegadores no permiten cargar las fotos cuando abris index.html directamente desde tu disco (file://).</p>
+    <p style="line-height:1.5;color:#e6e8ec;margin-top:18px;"><b>Opciones para verlo:</b></p>
+    <p style="line-height:1.6;color:#9aa0ad;text-align:left;margin:14px 0;">
+      <b style="color:#4a8cff;">1) Servidor local:</b> doble clic en <code style="background:#15171c;padding:2px 6px;border-radius:3px;">ver-tour-local.bat</code> (en la misma carpeta).<br><br>
+      <b style="color:#4a8cff;">2) Subirlo a internet (gratis):</b> arrastra esta carpeta a <a href="https://app.netlify.com/drop" target="_blank" style="color:#4a8cff;">app.netlify.com/drop</a> y te da un link publico al instante.
+    </p>
+  </div>
+</div>
+
+<div id="cover">
+  <div class="cover-content">
+    <h1>Mi Tour 360</h1>
+    <button id="cover-start">Iniciar tour</button>
+  </div>
+</div>
+
+<div id="tour-title">Mi Tour 360</div>
+<div id="logo-wrap" style="display:none"><img id="logo-img" alt="Logo"></div>
+<div id="scene-name"></div>
+
+<div id="zoom-controls">
+  <div class="control-group">
+    <button id="btn-plan" style="display:none" title="Ver plano">Plano</button>
+  </div>
+  <div class="control-group">
+    <button id="btn-zoom-out" title="Alejar">−</button>
+    <span id="zoom-val">100%</span>
+    <button id="btn-zoom-in" title="Acercar">+</button>
+  </div>
+</div>
+
+<div id="toolbar">
+  <button id="btn-audio" style="display:none">🔊</button>
+</div>
+
+<div id="panorama"></div>
+
+<div id="plan-overlay">
+  <div class="plan-wrap">
+    <img id="plan-img" alt="Plano">
+    <div id="plan-markers"></div>
+  </div>
+</div>
+
+<div id="info-popup">
+  <div class="info-content">
+    <button class="close-x" id="info-close">×</button>
+    <h2 id="info-title"></h2>
+    <img id="info-image" style="display:none">
+    <p id="info-desc"></p>
+    <a id="info-url" class="info-link" target="_blank" rel="noopener" style="display:none"></a>
+  </div>
+</div>
+
+<audio id="bg-audio" loop></audio>
+
+<script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+<script>
+const TOUR = {"title":"Mi Tour 360","startScene":"img_20260509_132909_00_518_8vwjod","options":{"autoRotate":false,"compass":true},"cover":null,"logo":null,"audio":null,"plan":null,"scenes":{"img_20260509_132909_00_518_8vwjod":{"title":"Salon","panorama":"photos/img_20260509_132909_00_518_8vwjod.jpg","initialYaw":9.88280094163008,"initialPitch":-3.0700007342814324,"initialHfov":120,"northOffset":0,"hotspots":[{"kind":"scene","pitch":2.0038822711988296,"yaw":111.74563802455759,"target":"3_6anwrd","text":""},{"kind":"scene","pitch":0.28030193064952147,"yaw":144.16303180924135,"target":"gh_70tkly","text":""}]},"3_6anwrd":{"title":"Living","panorama":"photos/3_6anwrd.jpg","initialYaw":154.0977154004679,"initialPitch":-4.073625950515242,"initialHfov":120,"northOffset":0,"hotspots":[{"kind":"scene","pitch":4.508512834028418,"yaw":-100.1972620437686,"target":"gh_70tkly","text":""},{"kind":"scene","pitch":7.72485273977035,"yaw":-36.15469828053383,"target":"img_20260509_132909_00_518_8vwjod","text":""}]},"gh_70tkly":{"title":"Entrada","panorama":"photos/gh_70tkly.jpg","initialYaw":0,"initialPitch":0,"initialHfov":120,"northOffset":0,"hotspots":[{"kind":"scene","pitch":-1.743579961359902,"yaw":129.66484182649612,"target":"3_6anwrd","text":""},{"kind":"scene","pitch":-3.541949332586989,"yaw":53.9556373624494,"target":"img_20260509_132909_00_518_8vwjod","text":""}]}}};
+
+if (location.protocol === 'file:') {
+  document.getElementById('file-warning').style.display = 'flex';
+  document.getElementById('cover').style.display = 'none';
+  document.getElementById('tour-title').style.display = 'none';
+  throw new Error('file:// not supported');
+}
+
+function buildPannellumScenes() {
+  const scenes = {};
+  for (const [id, s] of Object.entries(TOUR.scenes)) {
+    const hotSpots = (s.hotspots || []).map((hs, idx) => {
+      if (hs.kind === 'scene') {
+        return {
+          id: 'hs_' + idx,
+          pitch: hs.pitch, yaw: hs.yaw,
+          type: 'scene',
+          text: hs.text || (TOUR.scenes[hs.target] && TOUR.scenes[hs.target].title) || 'Ir',
+          sceneId: hs.target,
+        };
+      } else {
+        return {
+          id: 'hs_' + idx,
+          pitch: hs.pitch, yaw: hs.yaw,
+          type: 'info',
+          text: hs.title || 'Info',
+          clickHandlerFunc: function (e) { if (e && e.stopPropagation) e.stopPropagation(); openInfoPopup(hs); },
+        };
+      }
+    });
+    scenes[id] = {
+      type: 'equirectangular',
+      panorama: s.panorama,
+      title: s.title,
+      yaw: s.initialYaw || 0,
+      pitch: s.initialPitch || 0,
+      hfov: s.initialHfov || 100,
+      northOffset: s.northOffset || 0,
+      hotSpots,
+    };
+  }
+  return scenes;
+}
+
+let viewer;
+function startTour() {
+  viewer = pannellum.viewer('panorama', {
+    default: {
+      firstScene: TOUR.startScene,
+      sceneFadeDuration: 800,
+      autoLoad: true,
+      hfov: 100,
+      compass: !!(TOUR.options && TOUR.options.compass),
+      autoRotate: (TOUR.options && TOUR.options.autoRotate) ? -2 : 0,
+      autoRotateInactivityDelay: 3000,
+      showZoomCtrl: false,
+      showFullscreenCtrl: false,
+    },
+    scenes: buildPannellumScenes(),
+  });
+  viewer.on('scenechange', updateSceneLabel);
+  updateSceneLabel(TOUR.startScene);
+  setupPlan();
+  setupAudio();
+  setupLogo();
+  setupZoom();
+}
+
+function setupZoom() {
+  const zoomVal = document.getElementById('zoom-val');
+  const updateZoom = () => {
+    if (!viewer) return;
+    // Calculamos el porcentaje basado en el HFOV inicial (100)
+    const pct = Math.round((100 / viewer.getHfov()) * 100);
+    zoomVal.textContent = pct + '%';
+  };
+  
+  document.getElementById('btn-zoom-in').onclick = () => {
+    if (viewer) {
+      viewer.setHfov(viewer.getHfov() - 10, true);
+      setTimeout(updateZoom, 400); // Esperar a que termine la animación
+    }
+  };
+  document.getElementById('btn-zoom-out').onclick = () => {
+    if (viewer) {
+      viewer.setHfov(viewer.getHfov() + 10, true);
+      setTimeout(updateZoom, 400);
+    }
+  };
+
+  // También actualizar cuando se usa la rueda del mouse
+  if (viewer) {
+    viewer.on('zoomchange', updateZoom);
+  }
+  updateZoom();
+}
+
+function setupLogo() {
+  if (!TOUR.logo) return;
+  const wrap = document.getElementById('logo-wrap');
+  const img = document.getElementById('logo-img');
+  img.src = TOUR.logo;
+  wrap.style.display = 'block';
+}
+
+function updateSceneLabel(id) {
+  const s = TOUR.scenes[id];
+  document.getElementById('scene-name').textContent = (s && s.title) ? s.title : '';
+  if (TOUR.plan) renderPlanMarkers(id);
+}
+
+function setupPlan() {
+  if (!TOUR.plan) return;
+  const overlay = document.getElementById('plan-overlay');
+  const btn = document.getElementById('btn-plan');
+  document.getElementById('plan-img').src = TOUR.plan.image;
+  btn.style.display = '';
+  overlay.classList.add('show');
+  btn.classList.add('active');
+  btn.onclick = () => {
+    const showing = overlay.classList.toggle('show');
+    btn.classList.toggle('active', showing);
+  };
+  renderPlanMarkers(TOUR.startScene);
+}
+
+function renderPlanMarkers(activeId) {
+  if (!TOUR.plan) return;
+  const layer = document.getElementById('plan-markers');
+  layer.innerHTML = '';
+  let i = 1;
+  for (const sceneId of Object.keys(TOUR.scenes)) {
+    const m = TOUR.plan.markers && TOUR.plan.markers[sceneId];
+    if (!m) continue;
+    const div = document.createElement('div');
+    div.className = 'plan-marker' + (sceneId === activeId ? ' active' : '');
+    div.style.left = (m.x * 100) + '%';
+    div.style.top = (m.y * 100) + '%';
+    div.textContent = i;
+    div.title = TOUR.scenes[sceneId].title;
+    div.onclick = () => { if (viewer) viewer.loadScene(sceneId); };
+    layer.appendChild(div);
+    i++;
+  }
+}
+
+function setupAudio() {
+  if (!TOUR.audio) return;
+  const audio = document.getElementById('bg-audio');
+  const btn = document.getElementById('btn-audio');
+  audio.src = TOUR.audio;
+  btn.style.display = '';
+  let playing = false;
+  function setPlaying(p) {
+    playing = p;
+    btn.textContent = p ? '🔊' : '🔇';
+    btn.classList.toggle('active', p);
+  }
+  btn.onclick = () => {
+    if (playing) { audio.pause(); setPlaying(false); }
+    else { audio.play().then(() => setPlaying(true)).catch(() => setPlaying(false)); }
+  };
+  audio.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
+}
+
+function openInfoPopup(hs) {
+  document.getElementById('info-title').textContent = hs.title || '';
+  document.getElementById('info-desc').textContent = hs.description || '';
+  const img = document.getElementById('info-image');
+  if (hs.image) { img.src = hs.image; img.style.display = ''; } else { img.style.display = 'none'; img.src = ''; }
+  const a = document.getElementById('info-url');
+  if (hs.url) { a.href = hs.url; a.textContent = hs.url; a.style.display = ''; } else { a.style.display = 'none'; }
+  document.getElementById('info-popup').classList.add('show');
+}
+
+document.getElementById('info-close').onclick = () => document.getElementById('info-popup').classList.remove('show');
+document.getElementById('info-popup').onclick = (e) => { if (e.target.id === 'info-popup') e.currentTarget.classList.remove('show'); };
+
+document.getElementById('cover-start').addEventListener('click', function() {
+  var cov = document.getElementById('cover');
+  cov.classList.add('hidden');
+  setTimeout(function() { cov.style.display = 'none'; }, 500);
+  
+  if (typeof pannellum === 'undefined') {
+    alert('Error: La librería del tour no cargó. Verificá tu conexión a internet.');
+    return;
+  }
+  startTour();
+});
+
+if (TOUR.cover) {
+  document.getElementById('cover').style.backgroundImage = "url('" + TOUR.cover + "')";
+}
+</script>
+</body>
+</html>
