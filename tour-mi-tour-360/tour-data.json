@@ -31,6 +31,13 @@
           "yaw": 144.16303180924135,
           "target": "gh_70tkly",
           "text": ""
+        },
+        {
+          "kind": "scene",
+          "pitch": -0.29151768757495483,
+          "yaw": 79.62343873917398,
+          "target": "8_em2yr6",
+          "text": ""
         }
       ]
     },
@@ -55,6 +62,13 @@
           "yaw": -36.15469828053383,
           "target": "img_20260509_132909_00_518_8vwjod",
           "text": ""
+        },
+        {
+          "kind": "scene",
+          "pitch": -19.683841700663482,
+          "yaw": -36.31574158208281,
+          "target": "8_em2yr6",
+          "text": ""
         }
       ]
     },
@@ -77,6 +91,44 @@
           "kind": "scene",
           "pitch": -3.541949332586989,
           "yaw": 53.9556373624494,
+          "target": "img_20260509_132909_00_518_8vwjod",
+          "text": ""
+        },
+        {
+          "kind": "scene",
+          "pitch": -1.4038455482682348,
+          "yaw": 97.00594473849974,
+          "target": "8_em2yr6",
+          "text": ""
+        }
+      ]
+    },
+    "8_em2yr6": {
+      "title": "Sala Chica",
+      "panorama": "photos/8_em2yr6.jpg",
+      "initialYaw": 19.560009267197017,
+      "initialPitch": -6.3543933042281395,
+      "initialHfov": 120,
+      "northOffset": 0,
+      "hotspots": [
+        {
+          "kind": "scene",
+          "pitch": 7.9261732550804975,
+          "yaw": 96.8420237216884,
+          "target": "3_6anwrd",
+          "text": ""
+        },
+        {
+          "kind": "scene",
+          "pitch": 8.562310199759652,
+          "yaw": 135.94913240225424,
+          "target": "gh_70tkly",
+          "text": ""
+        },
+        {
+          "kind": "scene",
+          "pitch": 6.118449458636529,
+          "yaw": 178.98084442788132,
           "target": "img_20260509_132909_00_518_8vwjod",
           "text": ""
         }
