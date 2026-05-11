@@ -20,25 +20,25 @@
       "hotspots": [
         {
           "kind": "scene",
-          "pitch": -1.2125848191895299,
-          "yaw": 143.41783208192672,
-          "target": "5656_1k2wjo",
+          "pitch": 1.2419524501941055,
+          "yaw": 146.21572160086194,
+          "target": "gh_704hu5",
           "text": ""
         }
       ]
     },
-    "5656_1k2wjo": {
+    "gh_704hu5": {
       "title": "Entrada",
-      "panorama": "photos/5656_1k2wjo.jpg",
-      "initialYaw": 0,
-      "initialPitch": 0,
+      "panorama": "photos/gh_704hu5.jpg",
+      "initialYaw": -2.6210577915162503,
+      "initialPitch": -8.856441311536223,
       "initialHfov": 120,
       "northOffset": 0,
       "hotspots": [
         {
           "kind": "scene",
-          "pitch": -2.112709521951423,
-          "yaw": 54.77862482004323,
+          "pitch": 0.38484580322063644,
+          "yaw": 50.84727696525718,
           "target": "img_20260509_132909_00_518_brk1pk",
           "text": ""
         }
