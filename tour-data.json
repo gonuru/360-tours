@@ -17,7 +17,32 @@
       "initialPitch": 0,
       "initialHfov": 100,
       "northOffset": 0,
-      "hotspots": []
+      "hotspots": [
+        {
+          "kind": "scene",
+          "pitch": -1.2125848191895299,
+          "yaw": 143.41783208192672,
+          "target": "5656_1k2wjo",
+          "text": ""
+        }
+      ]
+    },
+    "5656_1k2wjo": {
+      "title": "Entrada",
+      "panorama": "photos/5656_1k2wjo.jpg",
+      "initialYaw": 0,
+      "initialPitch": 0,
+      "initialHfov": 120,
+      "northOffset": 0,
+      "hotspots": [
+        {
+          "kind": "scene",
+          "pitch": -2.112709521951423,
+          "yaw": 54.77862482004323,
+          "target": "img_20260509_132909_00_518_brk1pk",
+          "text": ""
+        }
+      ]
     }
   }
 }
