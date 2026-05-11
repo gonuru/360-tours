@@ -1,0 +1,23 @@
+{
+  "title": "Mi Tour 360",
+  "startScene": "gh_2wjc50",
+  "options": {
+    "autoRotate": false,
+    "compass": true
+  },
+  "cover": null,
+  "logo": null,
+  "audio": null,
+  "plan": null,
+  "scenes": {
+    "gh_2wjc50": {
+      "title": "gh",
+      "panorama": "photos/gh_2wjc50.jpg",
+      "initialYaw": 0,
+      "initialPitch": 0,
+      "initialHfov": 100,
+      "northOffset": 0,
+      "hotspots": []
+    }
+  }
+}
